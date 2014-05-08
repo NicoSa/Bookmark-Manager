@@ -6,7 +6,8 @@ gem 'database_cleaner'
 gem 'capybara'
 gem 'sinatra'
 gem 'shotgun'
+gem 'bcrypt-ruby'
 
 group :development, :test do
-	gem "rspec"
+	gem 'rspec'
 end
