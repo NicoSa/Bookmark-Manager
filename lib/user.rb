@@ -1,9 +1,11 @@
 require 'bcrypt'
-require_relative '../helpers/bcrypt.rb'
+# require_relative '../helpers/bcrypt.rb'
 
 
 class User
 
+	# include BCrypt
+	
 	attr_reader :password
 	attr_accessor :password_confirmation
 	

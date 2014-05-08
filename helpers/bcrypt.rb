@@ -1,6 +1,7 @@
 module BCrypt
 
 	class Password
+		
 		def initialize(digest)
 			@digest = digest
 		end
