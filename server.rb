@@ -5,14 +5,8 @@ require './lib/link'
 require './lib/tag'
 require './lib/user'
 require 'rack-flash'
-
-env = ENV["RACK_ENV"] || "development"
-
-DataMapper.setup(:default, "postgres://localhost/bookmark_manager_#{env}")
-
-DataMapper.finalize
-
-DataMapper.auto_upgrade!
+require_relative './helpers/current_user.rb'
+require_relative './helpers/datamapper_setup.rb'
 
 use Rack::Flash
 
@@ -58,8 +52,3 @@ post '/users' do
   end
 end
 
-helpers do
-  def current_user
-    @current_user ||= User.get(session[:user_id]) if session[:user_id]
-  end
-end
