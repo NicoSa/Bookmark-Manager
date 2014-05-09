@@ -1,2 +1,3 @@
-web bundle exec rackup server.rb -p $PORT
+require './server'
 
+run Sinatra::Application
