@@ -30,4 +30,8 @@ class User
 			end
 	end
 
+	def email_exist?(email)
+		first(:email => email) == true
+	end
+
 end

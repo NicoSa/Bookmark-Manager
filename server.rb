@@ -1,9 +1,6 @@
-require 'data_mapper'
 require 'sinatra'
 require 'sinatra/base'
-require './lib/link'
-require './lib/tag'
-require './lib/user'
+
 require 'rack-flash'
 require_relative './helpers/current_user.rb'
 require_relative './helpers/datamapper_setup.rb'
@@ -78,5 +75,12 @@ get '/forgotten_password' do
 end
 
 post '/forgotten_password' do
-  "#{params[:email]}"
+  user = User.first(:email => params[:email]).email
+  "#{user}"
+  
+  # if 
+  #   "You exist as a user"
+  # else
+  #   "Fuck off, hacker!"
+  # end
 end
