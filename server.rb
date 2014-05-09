@@ -72,3 +72,7 @@ delete '/sessions' do
   session[:user_id] = nil
   "Good bye!"
 end
+
+get '/forgotten_password' do
+  erb :forgotten_password
+end
