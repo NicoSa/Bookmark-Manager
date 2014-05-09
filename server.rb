@@ -2,9 +2,13 @@ require 'sinatra'
 require 'sinatra/base'
 
 
+
 require 'rack-flash'
 require_relative './helpers/current_user.rb'
 require_relative './helpers/datamapper_setup.rb'
+require_relative './lib/email_controller.rb'
+
+include Email
 
 use Rack::Flash
 
@@ -77,16 +81,27 @@ end
 
 post '/forgotten_password' do
   user = User.first(:email => params[:email])
-  raise "This email doesn´t exist in our database" if user == nil
-
-  if user.email == params[:email]
+  #raise "This email doesn´t exist in our database" if user == nil
+  begin
+    user.email == params[:email]
     generated_token = (1..64).map{('A'..'Z').to_a.sample}.join
     user.password_token = generated_token
     user.password_token_timestamp = Time.now
+    user.save
     "no error"
-  else
-    "no, just no"
+  rescue
+    "This user doesn´t exist!"
   end
 
 end
 
+get '/reset_password/:token' do
+  user = User.first(:password_token => token)
+  user.password_token_timestamp 
+  send_simple_message
+  erb :"users/reset_password"
+end
+
+post '/reset_password' do
+
+end
