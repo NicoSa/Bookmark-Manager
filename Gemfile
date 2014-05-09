@@ -1,5 +1,6 @@
 source "http://www.rubygems.org"
 
+ruby '2.1.1'
 gem 'data_mapper'
 gem 'dm-postgres-adapter'
 gem 'database_cleaner'
