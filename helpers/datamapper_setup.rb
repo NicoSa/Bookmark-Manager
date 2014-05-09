@@ -1,7 +1,7 @@
 env = ENV["RACK_ENV"] || "development"
 
 require 'data_mapper'
-
+require 'dm-timestamps'
 require './lib/link'
 require './lib/tag'
 require './lib/user'
