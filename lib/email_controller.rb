@@ -3,8 +3,6 @@ require 'rest_client'
 module Email
 
 def send_recovery_email(token, email)
-	puts token
-	puts email
   RestClient.post "https://api:key-7ap14r7nxhar8f19n1xrbp6c3lz9-k99"\
   "@api.mailgun.net/v2/app25052767.mailgun.org/messages",
   :from => "nico@nicosaueressig.de",

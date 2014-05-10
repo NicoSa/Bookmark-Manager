@@ -6,6 +6,7 @@ require_relative './helpers/datamapper_setup.rb'
 require_relative './lib/email_controller.rb'
 
 include Email
+include BCrypt
 
 use Rack::Flash
 
@@ -87,18 +88,42 @@ post '/forgotten_password' do
     user.save
     send_recovery_email(generated_token,email)
   rescue
-    "This user doesn´t exist!"
+    'This user doesn´t exist! <a href="/forgotten_password">Back</a>'
   end
 
 end
 
 get '/reset_password/:token' do
-  user = User.first(:password_token => token)
-  user.password_token_timestamp 
-  send_simple_message
-  erb :"users/reset_password"
+  user = User.first(:password_token => params[:token])
+  begin 
+    user.password_token == params[:token]
+    @token = params[:token]
+    @email = user.email
+    # user.password_token_timestamp
+    # current_time = Time.now
+    erb :"users/reset_password"
+  rescue
+    'Token has crashed...'
+  end
 end
 
 post '/reset_password' do
+  begin
+      params[:password] == params[:password_confirmation]
+      puts "checked for identical password"
+      user = User.first(:password_token => params[:token])
+      puts user.inspect
+      puts "found user"
+      user.password_digest = BCrypt::Password.create(params[:password])
+      puts user.inspect
+      puts "generated new password"
+      user.password_token = nil
+      user.password_token_timestamp = nil
+      user.save
+      puts "deleted tokens"
+      "All done, you can login with your new password now"
+  rescue
+    "Something crashed"
+  end
 
 end
