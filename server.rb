@@ -1,8 +1,5 @@
 require 'sinatra'
 require 'sinatra/base'
-
-
-
 require 'rack-flash'
 require_relative './helpers/current_user.rb'
 require_relative './helpers/datamapper_setup.rb'
@@ -81,14 +78,14 @@ end
 
 post '/forgotten_password' do
   user = User.first(:email => params[:email])
-  #raise "This email doesn´t exist in our database" if user == nil
   begin
     user.email == params[:email]
+    email = user.email
     generated_token = (1..64).map{('A'..'Z').to_a.sample}.join
     user.password_token = generated_token
     user.password_token_timestamp = Time.now
     user.save
-    "no error"
+    send_recovery_email(generated_token,email)
   rescue
     "This user doesn´t exist!"
   end

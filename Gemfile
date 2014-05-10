@@ -10,6 +10,7 @@ gem 'shotgun'
 gem 'bcrypt-ruby'
 gem 'rack-flash3'
 gem 'mailgun-ruby'
+gem 'rest_client'
 
 group :development, :test do
 	gem 'rspec'
