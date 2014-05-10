@@ -1,4 +1,4 @@
-env = ENV["RACK_ENV"] || "development"
+#env = ENV["RACK_ENV"] || "development"
 
 require 'data_mapper'
 require 'dm-timestamps'
