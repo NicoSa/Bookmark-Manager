@@ -1,5 +1,5 @@
 require 'spec_helper'
-require_relative '../../helpers/signin.rb'
+require_relative '../../lib/signin.rb'
 
 include SignIn
 

@@ -2,9 +2,9 @@ env = ENV["RACK_ENV"] || "development"
 
 require 'data_mapper'
 require 'dm-timestamps'
-require './lib/link'
-require './lib/tag'
-require './lib/user'
+require_relative './link.rb'
+require_relative './tag.rb'
+require_relative './user.rb'
 
 DataMapper.setup(:default, "postgres://localhost/bookmark_manager_#{env}")
 

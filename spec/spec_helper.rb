@@ -2,7 +2,7 @@ ENV["RACK_ENV"] = 'test'
 
 require 'database_cleaner'
 require 'capybara/rspec'
-require './server'
+require_relative '../server.rb'
 
 Capybara.app = Sinatra::Application.new
 

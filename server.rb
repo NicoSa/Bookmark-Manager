@@ -2,7 +2,7 @@ require 'sinatra'
 require 'sinatra/base'
 require 'rack-flash'
 require_relative './helpers/current_user.rb'
-require_relative './helpers/datamapper_setup.rb'
+require_relative './lib/datamapper_setup.rb'
 require_relative './lib/email_controller.rb'
 
 include Email
@@ -78,14 +78,17 @@ get '/forgotten_password' do
 end
 
 post '/forgotten_password' do
+  #find user by email
   user = User.first(:email => params[:email])
   begin
+    #is email and database email identical?
     user.email == params[:email]
     email = user.email
     generated_token = (1..64).map{('A'..'Z').to_a.sample}.join
     user.password_token = generated_token
     user.password_token_timestamp = Time.now
     user.save
+    #send email with token and link
     send_recovery_email(generated_token,email)
   rescue
     'This user doesn´t exist! <a href="/forgotten_password">Back</a>'
@@ -98,32 +101,28 @@ get '/reset_password/:token' do
   begin 
     user.password_token == params[:token]
     @token = params[:token]
-    @email = user.email
-    # user.password_token_timestamp
-    # current_time = Time.now
     erb :"users/reset_password"
   rescue
-    'Token has crashed...'
+    'Token has already been used'
   end
 end
 
 post '/reset_password' do
-  begin
+  begin      
+      #checks for identical password"
       params[:password] == params[:password_confirmation]
-      puts "checked for identical password"
+      #find User by token
       user = User.first(:password_token => params[:token])
-      puts user.inspect
-      puts "found user"
+      #set new password and hash it
       user.password_digest = BCrypt::Password.create(params[:password])
-      puts user.inspect
-      puts "generated new password"
+      #set token and timestamp nil
       user.password_token = nil
       user.password_token_timestamp = nil
+      #save changes
       user.save
-      puts "deleted tokens"
       "All done, you can login with your new password now"
   rescue
-    "Something crashed"
+    "Something wasn´t quite right, try again or request a new token"
   end
 
 end
