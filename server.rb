@@ -41,8 +41,8 @@ end
 
 post '/users' do
   @user = User.create(:email => params[:email],
-              :password => params[:password],
-              :password_confirmation => params[:password_confirmation])
+                      :password => params[:password],
+                      :password_confirmation => params[:password_confirmation])
   if @user.save
     session[:user_id] = @user.id
     redirect to ('/')
@@ -91,9 +91,8 @@ post '/forgotten_password' do
     #send email with token and link
     send_recovery_email(generated_token,email)
   rescue
-    'This user doesn´t exist! <a href="/forgotten_password">Back</a>'
+    erb :user_not_exist 
   end
-
 end
 
 get '/reset_password/:token' do
@@ -103,7 +102,7 @@ get '/reset_password/:token' do
     @token = params[:token]
     erb :"users/reset_password"
   rescue
-    'Token has already been used'
+    erb :token_has_been_used
   end
 end
 
@@ -120,9 +119,8 @@ post '/reset_password' do
       user.password_token_timestamp = nil
       #save changes
       user.save
-      "All done, you can login with your new password now"
+      erb :password_changed
   rescue
-    "Something wasn´t quite right, try again or request a new token"
+    erb :token_crash
   end
-
 end

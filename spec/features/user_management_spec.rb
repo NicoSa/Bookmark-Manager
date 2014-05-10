@@ -65,3 +65,40 @@ feature "User signs out" do
 	end
 
 end
+
+feature "User forgets password" do
+
+	before(:each) do
+		User.create(:email => "test@test.com",
+					:password => 'test',
+					:password_confirmation => 'test')
+	end
+
+	scenario "and demands reset" do
+		visit('/forgotten_password')
+		expect(page).to have_content("Please put in your email and we will send you a link to resetting your password!
+")
+	end
+
+	scenario "puts in non-existant email" do
+		visit('/forgotten_password')
+		fill_in 'email', :with => 'wrong@email.com'
+		click_button('reset password')
+		expect(page).to have_content('This user doesn´t exist!')
+	end
+
+end
+
+feature "User tries to reset password" do
+
+	before(:each) do
+		User.create(:email => "test@test.com",
+					:password => 'test',
+					:password_confirmation => 'test')
+	end
+
+	scenario "has no valid token" do
+		visit('/reset_password/nonvalidtoken')
+		expect(page).to have_content('Token has already been used!')
+	end
+end

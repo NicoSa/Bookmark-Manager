@@ -1,5 +1,5 @@
 require 'data_mapper'
-require_relative './helpers/datamapper_setup.rb'
+require_relative './lib/datamapper_setup.rb'
 
 task :auto_upgrade do
 	DataMapper.auto_upgrade!
