@@ -35,7 +35,6 @@ get '/tags/:text' do
 end
 
 get '/users/new' do
-    @user = User.new
     erb :'users/new'
 end
 
@@ -46,7 +45,7 @@ post '/users' do
   if @user.save
     session[:user_id] = @user.id
     redirect to ('/')
-  else
+  else  
     flash.now[:errors] = @user.errors.full_messages
     erb :"users/new"
   end
