@@ -1,4 +1,24 @@
+<head>
+	<link rel="stylesheet" type="text/css" href="/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css" href="/stylesheet.css" />
+</head>
 <body>
+	  <nav class="navbar navbar-default navbar-static-top" role="navigation">
+	  <div class="container">
+	  <div class="btn-group">
+	  <a href="/"><img src="/bookmark.png" id="bookmark-img"></a>
+	  <a href="/users/new">
+	  	<button type="button" class="btn btn-default" >Sign up</button>
+	  </a>
+	  <a href="/sessions/new">
+	  	<button type="button" class="btn btn-default" href="/sessions/new">Sign in</button>
+	  </a>
+	  <a href="/forgotten_password">
+	  	<button type="button" class="btn btn-default" href="/forgotten_password">Forgot Password?</button>
+	  </a>
+</div>
+	
+</nav>
 	<%= yield %>
 	<% if current_user %>
 	Welcome, <%= current_user.email %>
@@ -21,4 +41,5 @@
 		<% end %>
 	</ul>
 	<% end %>
+	<script src="bootstrap.min.js" />
 </body>

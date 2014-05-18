@@ -18,16 +18,16 @@ RSpec.configure do |config|
   config.filter_run :focus
 
   config.before(:suite) do
-  	DatabaseCleaner.strategy = :transaction
-  	DatabaseCleaner.clean_with(:truncation)
+    DatabaseCleaner.strategy = :transaction
+    DatabaseCleaner.clean_with(:truncation)
   end
 
   config.before(:each) do
-  	DatabaseCleaner.start
+    DatabaseCleaner.start
   end
 
   config.after(:each) do
-  	DatabaseCleaner.clean
+    DatabaseCleaner.clean
   end
 
   # Run specs in random order to surface order dependencies. If you find an

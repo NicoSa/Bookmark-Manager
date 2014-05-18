@@ -29,13 +29,13 @@ post '/links' do
 end
 
 get '/tags/:text' do
-	tag = Tag.first(:text => params[:text])
-	@links = tag ? tag.links : []
-	erb :index
+  tag = Tag.first(:text => params[:text])
+  @links = tag ? tag.links : []
+  erb :index
 end
 
 get '/users/new' do
-    erb :'users/new'
+  erb :'users/new'
 end
 
 post '/users' do
@@ -45,7 +45,7 @@ post '/users' do
   if @user.save
     session[:user_id] = @user.id
     redirect to ('/')
-  else  
+  else
     flash.now[:errors] = @user.errors.full_messages
     erb :"users/new"
   end
@@ -90,13 +90,13 @@ post '/forgotten_password' do
     #send email with token and link
     send_recovery_email(generated_token,email)
   rescue
-    erb :user_not_exist 
+    erb :user_not_exist
   end
 end
 
 get '/reset_password/:token' do
   user = User.first(:password_token => params[:token])
-  begin 
+  begin
     user.password_token == params[:token]
     @token = params[:token]
     erb :"users/reset_password"
@@ -106,19 +106,19 @@ get '/reset_password/:token' do
 end
 
 post '/reset_password' do
-  begin      
-      #checks for identical password"
-      params[:password] == params[:password_confirmation]
-      #find User by token
-      user = User.first(:password_token => params[:token])
-      #set new password and hash it
-      user.password_digest = BCrypt::Password.create(params[:password])
-      #set token and timestamp nil
-      user.password_token = nil
-      user.password_token_timestamp = nil
-      #save changes
-      user.save
-      erb :password_changed
+  begin
+    #checks for identical password"
+    params[:password] == params[:password_confirmation]
+    #find User by token
+    user = User.first(:password_token => params[:token])
+    #set new password and hash it
+    user.password_digest = BCrypt::Password.create(params[:password])
+    #set token and timestamp nil
+    user.password_token = nil
+    user.password_token_timestamp = nil
+    #save changes
+    user.save
+    erb :password_changed
   rescue
     erb :token_crash
   end
