@@ -1,32 +1,30 @@
 <head>
 	<link rel="stylesheet" type="text/css" href="/bootstrap.min.css" />
 	<link rel="stylesheet" type="text/css" href="/stylesheet.css" />
+	<link rel="shortcut icon" href="/favicon.png" />
 </head>
 <body>
-	  <nav class="navbar navbar-default navbar-static-top" role="navigation">
-	  <div class="container">
-	  <div class="btn-group">
-	  <a href="/"><img src="/bookmark.png" id="bookmark-img"></a>
-	  <a href="/users/new">
-	  	<button type="button" class="btn btn-default" >Sign up</button>
-	  </a>
-	  <a href="/sessions/new">
-	  	<button type="button" class="btn btn-default" href="/sessions/new">Sign in</button>
-	  </a>
-	  <a href="/forgotten_password">
-	  	<button type="button" class="btn btn-default" href="/forgotten_password">Forgot Password?</button>
-	  </a>
-</div>
-	
+<nav class="navbar navbar-default navbar-static-top" role="navigation">
+	<div class="container">
+		<% if current_user %>
+			<form method="post" action="/sessions">
+			<a href="/"><img src="/bookmark.png" id="bookmark-img"></a>
+			Welcome, <%= current_user.email %>
+				<input type="hidden" name="_method" value="delete">
+				<input type="submit" value="Sign out" class="btn btn-default">
+			</form>
+		<% else %>
+			<a href="/"><img src="/bookmark.png" id="bookmark-img"></a>
+			<a href="/sessions/new">
+				<button type="button" class="btn btn-default" href="/sessions/new">Login</button>
+			</a>
+			<a href="/forgotten_password">
+				<button type="button" class="btn btn-default" href="/forgotten_password">Forgot Password?</button>
+			</a>
+		<% end %>
+	</div>
 </nav>
 	<%= yield %>
-	<% if current_user %>
-	Welcome, <%= current_user.email %>
-	<form method="post" action="/sessions">
-		<input type="hidden" name="_method" value="delete">
-		<input type="submit" value="Sign out">
-	</form>
-	<% end %>
 	
 	<% if flash[:notice] %>
 	<div id="notice">

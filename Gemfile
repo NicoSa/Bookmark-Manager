@@ -14,4 +14,5 @@ gem 'rest_client'
 
 group :development, :test do
 	gem 'rspec'
+	gem 'launchy'
 end

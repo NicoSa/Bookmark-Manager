@@ -10,3 +10,8 @@ li {
 	width: 140px;
 	height: 120px;
 }
+
+.fix-signup-button {
+	position: relative;
+	float: right;
+}

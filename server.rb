@@ -21,10 +21,10 @@ end
 post '/links' do
   url = params["url"]
   title = params["title"]
-  tags = params["tags"].split(" ").map do |tag|
-    Tag.first_or_create(:text => tag)
-  end
-  Link.create(:url => url, :title => title, :tags => tags)
+  # tags = params["tags"].split(" ").map do |tag|
+  #   Tag.first_or_create(:text => tag)
+  # end
+  Link.create(:url => url, :title => title)
   redirect to('/')
 end
 
@@ -69,7 +69,7 @@ end
 
 delete '/sessions' do
   session[:user_id] = nil
-  "Good bye!"
+  'Good bye! <a href="/">Back</a>'
 end
 
 get '/forgotten_password' do
@@ -77,17 +77,14 @@ get '/forgotten_password' do
 end
 
 post '/forgotten_password' do
-  #find user by email
   user = User.first(:email => params[:email])
   begin
-    #is email and database email identical?
     user.email == params[:email]
     email = user.email
     generated_token = (1..64).map{('A'..'Z').to_a.sample}.join
     user.password_token = generated_token
     user.password_token_timestamp = Time.now
     user.save
-    #send email with token and link
     send_recovery_email(generated_token,email)
   rescue
     erb :user_not_exist
@@ -107,16 +104,11 @@ end
 
 post '/reset_password' do
   begin
-    #checks for identical password"
     params[:password] == params[:password_confirmation]
-    #find User by token
     user = User.first(:password_token => params[:token])
-    #set new password and hash it
     user.password_digest = BCrypt::Password.create(params[:password])
-    #set token and timestamp nil
     user.password_token = nil
     user.password_token_timestamp = nil
-    #save changes
     user.save
     erb :password_changed
   rescue

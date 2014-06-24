@@ -1,25 +1,22 @@
 <ul>
-		<form action="/links" method="post" class="form-inline" role="form">
-  		<div class="form-group">
-			<input type="text" name="url" placeholder="URL">
-  		</div>
-  		<div class="form-group">
-			<input type="text" name="title", class:"form-control", placeholder="Title">
-  		</div>
-  		<div class="form-group">
-			<input type="text" name="tags" placeholder="Tags">
-  		</div>
-			<input type="submit" value="Add link" class="btn btn-default">
-		</form>
-	<div id="new-link">
-	</div>
+	<% if current_user %>
+		<div id="new-link">
+			<form action="/links" method="post" class="form-inline">
+				<input type="text" name="url" class="form-group" placeholder="URL">
+				<input type="text" name="title" class="form-group" placeholder="Title">
+				<input type="submit" value="Add link" class="btn btn-default">
+			</form>
+		</div>
+	<% end %>
 	<% @links.each do |link| %>
-	<li><div class="panel panel-default">
-  	<div class="panel-heading"><%= link.title %></div>
- 	 <div class="panel-body">
-    <a href="<%= link.url %>">Open this Website</a>
-  </div>
-</div>
-</a></li>
+		<li><div class="panel panel-default">
+		  		<div class="panel-heading">
+		  			<%= link.title %>
+		  		</div>
+		 	 	<div class="panel-body">
+		    		<a href="<%= link.url %>">Open this Website</a>
+		  		</div>
+			</div>
+		</li>
 	<% end %>
 </ul>
